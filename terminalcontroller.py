@@ -195,6 +195,10 @@ def bg_white(str) :
 # styles
 def bold(str) :
 	return colorize(str,'bold')
+def blink(str) :
+	return colorize(str,'blink')
+def reverse(str) :
+	return colorize(str,'reverse')
 
 def test() :
 	sys.stdout.write(normal('Normal colors:\n'))
