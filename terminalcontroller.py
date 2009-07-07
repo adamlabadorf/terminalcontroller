@@ -200,6 +200,14 @@ def blink(str) :
 def reverse(str) :
 	return colorize(str,'reverse')
 
+# convenience logging functions
+def info(str) :
+	sys.stderr.write(colorize('INFO: %s\n'%str,'bold white'))
+def warn(str) :
+	sys.stderr.write(colorize('WARN: ','bold white')+colorize(str,'bold yellow'))
+def error(str) :
+	sys.stderr.write(colorize('ERROR: ','bold white')+colorize(str,'bold red'))
+
 def test() :
 	sys.stdout.write(normal('Normal colors:\n'))
 	sys.stdout.write('This is %s text.\n'%bg_white(black('black')))
