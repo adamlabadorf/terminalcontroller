@@ -207,6 +207,8 @@ def warn(str) :
 	sys.stderr.write(colorize('WARN: ','bold white')+colorize(str,'bold yellow'))
 def error(str) :
 	sys.stderr.write(colorize('ERROR: ','bold white')+colorize(str,'bold red'))
+def announce(str) :
+	sys.stderr.write(colorize('\n'+'='*30+str+'='*30+'\n','bold yellow'))
 
 def test() :
 	sys.stdout.write(normal('Normal colors:\n'))
