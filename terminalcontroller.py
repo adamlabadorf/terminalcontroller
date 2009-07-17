@@ -204,9 +204,9 @@ def reverse(str) :
 def info(str) :
 	sys.stderr.write(colorize('INFO: %s\n'%str,'bold white'))
 def warn(str) :
-	sys.stderr.write(colorize('WARN: ','bold white')+colorize(str,'bold yellow'))
+	sys.stderr.write(colorize('WARN: ','bold white')+colorize(str+'\n','bold yellow'))
 def error(str) :
-	sys.stderr.write(colorize('ERROR: ','bold white')+colorize(str,'bold red'))
+	sys.stderr.write(colorize('ERROR: ','bold white')+colorize(str+'\n','bold red'))
 def announce(str) :
 	sys.stderr.write(colorize('\n'+'='*30+str+'='*30+'\n','bold yellow'))
 
