@@ -211,23 +211,19 @@ def reverse(st) :
     return colorize(st,'reverse')
 
 # convenience logging functions
-def info(st) :
-    sys.stdout.flush()
-    sys.stderr.flush()
-    sys.stderr.write(colorize('INFO: %s\n'%st,'bold white'))
-def warn(st) :
-    sys.stdout.flush()
-    sys.stderr.flush()
-    sys.stderr.write(colorize('WARN: ','bold white')+colorize(st+'\n','bold yellow'))
-def error(st) :
-    sys.stdout.flush()
-    sys.stderr.flush()
-    sys.stderr.write(colorize('ERROR: ','bold white')+colorize(st+'\n','bold red'))
-def announce(st) :
-    #sys.stdout.flush()
-    #sys.stderr.flush()
+def info(st,fd=sys.stderr) :
+    fd.flush()
+    fd.write(colorize('INFO: %s\n'%st,'bold white'))
+def warn(st,fd=sys.stderr) :
+    fd.flush()
+    fd.write(colorize('WARN: ','bold white')+colorize(st+'\n','bold yellow'))
+def error(st,fd=sys.stderr) :
+    fd.flush()
+    fd.write(colorize('ERROR: ','bold white')+colorize(st+'\n','bold red'))
+def announce(st,fd=sys.stderr) :
+    fd.flush()
     st = ' '+st+' '
-    sys.stderr.write(colorize('\n'+st.center(70,'=')+'\n','bold yellow'))
+    fd.write(colorize('\n'+st.center(70,'=')+'\n','bold yellow'))
 
 def test() :
     sys.stdout.write(normal('Normal colors:\n'))
