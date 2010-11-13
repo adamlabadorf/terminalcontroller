@@ -212,18 +212,25 @@ def reverse(st) :
 
 # convenience logging functions
 def info(st,fd=sys.stderr) :
+    out_st = 'INFO: %s\n'%st
     fd.flush()
-    fd.write(colorize('INFO: %s\n'%st,'bold white'))
+    fd.write(colorize(out_st,'bold white'))
+    return out_st
 def warn(st,fd=sys.stderr) :
+    out_st = 'WARN: %s\n'%st
     fd.flush()
     fd.write(colorize('WARN: ','bold white')+colorize(st+'\n','bold yellow'))
+    return out_st
 def error(st,fd=sys.stderr) :
+    out_st = 'ERROR: %s\n'%st
     fd.flush()
     fd.write(colorize('ERROR: ','bold white')+colorize(st+'\n','bold red'))
+    return out_st
 def announce(st,fd=sys.stderr) :
     fd.flush()
-    st = ' '+st+' '
-    fd.write(colorize('\n'+st.center(70,'=')+'\n','bold yellow'))
+    out_st = '\n'+(' '+st+' ').center(40,'=')+'\n'
+    fd.write(colorize(out_st,'bold yellow'))
+    return out_st
 
 def test() :
     sys.stdout.write(normal('Normal colors:\n'))
