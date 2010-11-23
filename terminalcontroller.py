@@ -2,6 +2,8 @@ import sys, re
 
 # modified from http://code.activestate.com/recipes/475116/
 
+TERM_ESCAPE = False
+
 class TerminalController:
     """
     A class that can be used to portably generate formatted output to
@@ -87,6 +89,12 @@ class TerminalController:
         output; if this stream is not a tty, then the terminal is
         assumed to be a dumb terminal (i.e., have no capabilities).
         """
+
+        # when printing things out on lines accepting user input control
+        # characters must be wrapped in special characters for correct
+        # word wrapping, always wrap when escape == True
+        self.escape = escape
+
         # Curses isn't available on all platforms
         try: import curses
         except: return
@@ -126,10 +134,6 @@ class TerminalController:
             for i,color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
                 setattr(self, 'BG_'+color, curses.tparm(set_bg_ansi, i) or '')
 
-        # when printing things out on lines accepting user input control
-        # characters must be wrapped in special characters for correct
-        # word wrapping, always wrap when escape == True
-        self.escape = escape
 
     def _tigetstr(self, cap_name):
         # String capabilities can include "delays" of the form "$<2>".
@@ -157,10 +161,10 @@ class TerminalController:
                 rendered = '\001'+rendered+'\002'
             return rendered
 
-term = TerminalController()
 
 # convenience methods
 def colorize(str,codes='normal') :
+    term = TerminalController(escape=TERM_ESCAPE)
     outstr = ''.join(['${%s}'%l.upper() for l in codes.split(' ')])
     return term.render(outstr+str+'${NORMAL}')
 def normal(st) :
@@ -213,23 +217,27 @@ def reverse(st) :
 # convenience logging functions
 def info(st,fd=sys.stderr) :
     out_st = 'INFO: %s\n'%st
-    fd.flush()
-    fd.write(colorize(out_st,'bold white'))
+    if fd :
+        fd.flush()
+        fd.write(colorize(out_st,'bold white'))
     return out_st
 def warn(st,fd=sys.stderr) :
     out_st = 'WARN: %s\n'%st
-    fd.flush()
-    fd.write(colorize('WARN: ','bold white')+colorize(st+'\n','bold yellow'))
+    if fd :
+        fd.flush()
+        fd.write(colorize('WARN: ','bold white')+colorize(st+'\n','bold yellow'))
     return out_st
 def error(st,fd=sys.stderr) :
     out_st = 'ERROR: %s\n'%st
-    fd.flush()
-    fd.write(colorize('ERROR: ','bold white')+colorize(st+'\n','bold red'))
+    if fd :
+        fd.flush()
+        fd.write(colorize('ERROR: ','bold white')+colorize(st+'\n','bold red'))
     return out_st
 def announce(st,fd=sys.stderr) :
-    fd.flush()
     out_st = '\n'+(' '+st+' ').center(40,'=')+'\n'
-    fd.write(colorize(out_st,'bold yellow'))
+    if fd :
+        fd.flush()
+        fd.write(colorize(out_st,'bold yellow'))
     return out_st
 
 def test() :
@@ -257,7 +265,7 @@ def test() :
     sys.stdout.write(colorize('Dimmed text\n','dim'))
     sys.stdout.write(reverse('Reverse text\n'))
 
-    term.escape = True
+    TERM_ESCAPE = True
     announce('This is announce')
     info('This is info')
     warn('This is warn')
