@@ -234,7 +234,7 @@ def error(st,fd=sys.stderr) :
         fd.write(colorize('ERROR: ','bold white')+colorize(st+'\n','bold red'))
     return out_st
 def announce(st,fd=sys.stderr) :
-    out_st = '\n'+(' '+st+' ').center(40,'=')+'\n'
+    out_st = '\n'+(' '+st+' ').center(max(80,80-len(st)),'=')+'\n'
     if fd :
         fd.flush()
         fd.write(colorize(out_st,'bold yellow'))
